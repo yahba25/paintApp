@@ -189,7 +189,7 @@ img {
             <button class="reset"><img src="reset.png" /></button>
             <button class="eraser"><img class="eImg" src="eraser.png" /></button>
             <button class="paint-all"><img src="fillColor.png" /></button>
-	    <button><a id="downloadLnk" download="YourFileName.jpg"><img src="file.png" style="height:100%; width:100%" /></a></button>
+	    <button><a id="downloadLnk" download="YourFileName.jpg"><img src="file.png" style="height:100%; width:80%" /></a></button>
 
         </div>
 
@@ -215,14 +215,8 @@ img {
             <!-- It's bad practice (to me) to put your CSS here.  I'd recommend the use of a CSS file! -->
             <canvas id="canvasSignature" height="100%"></canvas>
         </div>
-	<!--	<div>
-            <input type="button" onclick="uploadEx()" value="Upload" />
-        </div>
- 
-        <form method="post" accept-charset="utf-8" name="form1">
-            <input name="hidden_data" id='hidden_data' type="hidden"/>
-        </form>   -->
-       <!-- <div class="copy"><label>abhay maurya &copy;2018</label></div> -->
+	
+       <div class="copy"><label>abhay maurya &copy;2018</label></div>
     </div>
 	
     
@@ -463,27 +457,6 @@ img {
                      .unbind("mouseout");
       }
 	  
-	  function uploadEx() {
-                var canvas = document.getElementById("canvasSignature");
-                var dataURL = canvas.toDataURL("image/png");
-                document.getElementById('hidden_data').value = dataURL;
-                var fd = new FormData(document.forms["form1"]);
- 
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'upload_data.php', true);
- 
-                xhr.upload.onprogress = function(e) {
-                    if (e.lengthComputable) {
-                        var percentComplete = (e.loaded / e.total) * 100;
-                        console.log(percentComplete + '% uploaded');
-                        alert('Succesfully uploaded');
-                    }
-                };
- 
-                xhr.onload = function() {
- 
-                };
-                xhr.send(fd);
-            };
+	  
    </script>
 </html> 
