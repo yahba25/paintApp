@@ -266,26 +266,37 @@ img {
  
          if (is_touch_device) {
             // create a drawer which tracks touch movements
+			var isDragging=false;
             var drawer = {
                isDrawing: false,
-               touchstart: function (coors) {
+               touchstart: function (position) {
+			      isDragging = false;
                   ctx.beginPath();
-                  ctx.moveTo(coors.x, coors.y);
+                  ctx.moveTo(position.x, position.y);
                   this.isDrawing = true;
                },
-               touchmove: function (coors) {
+               touchmove: function (position) {
+				  isDragging=true;
                   if (this.isDrawing) {
-                     ctx.lineTo(coors.x, coors.y);
+                     ctx.lineTo(position.x, position.y);
                      ctx.stroke();
-					
-					 
+				
                   }
                },
-               touchend: function (coors) {
-                  if (this.isDrawing) {
-                     this.touchmove(coors);
+               touchend: function (position) {
+			      console.log("?");
+			      if(isDragging){
+				    console.log("drag");
+					if (this.isDrawing) {
+                     this.touchmove(position);
                      this.isDrawing = false;
-                  }
+					}
+				  }
+				  else{
+					console.log("tap");
+				  }
+                  
+				  
                }
 			   
             };
@@ -294,7 +305,7 @@ img {
             function draw(event) {
  
                // get the touch coordinates.  Using the first touch in case of multi-touch
-               var coors = {
+               var position = {
                   x: event.targetTouches[0].pageX,
                   y: event.targetTouches[0].pageY
                };
@@ -305,8 +316,8 @@ img {
                if (obj.offsetParent) {
                   // Every time we find a new object, we add its offsetLeft and offsetTop to curleft and curtop.
                   do {
-                     coors.x -= obj.offsetLeft;
-                     coors.y -= obj.offsetTop;
+                     position.x -= obj.offsetLeft;
+                     position.y -= obj.offsetTop;
                   }
 				  // The while loop can be "while (obj = obj.offsetParent)" only, which does return null
 				  // when null is passed back, but that creates a warning in some editors (i.e. VS2010).
@@ -314,14 +325,14 @@ img {
                }
  
                // pass the coordinates to the appropriate handler
-               drawer[event.type](coors);
+               drawer[event.type](position);
             }
  
             // attach the touchstart, touchmove, touchend event listeners.
             canvas.addEventListener('touchstart', draw, false);
             canvas.addEventListener('touchmove', draw, false);
             canvas.addEventListener('touchend', draw, false);
-	    canvas.addEventListener('tap', draw, false);
+	    //canvas.addEventListener('tap', draw, false);
  
             // prevent elastic scrolling
             canvas.addEventListener('touchmove', function (event) {
