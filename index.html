@@ -223,7 +223,7 @@ img {
 
 </body>
    <script type="text/javascript">
-    
+       var count=0;
        var color = '#ff0000';
        var bgColor = '#000000';
        var preColor = color;
@@ -255,7 +255,10 @@ img {
      $(document).ready(function () {
         // get references to the canvas element as well as the 2D drawing ctx
          function download() {
-		 	downloadLnk.download = 'myFilename.jpg';
+			count++;
+			var fileName=prompt("Save as : ","myPaint"+count);
+			console.log("name : "+fileName);
+			downloadLnk.download=fileName+".jpg";
 			var dt = canvas.toDataURL('Pictures/jpeg');
 			this.href = dt;
 		};
