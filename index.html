@@ -255,6 +255,7 @@ img {
      $(document).ready(function () {
         // get references to the canvas element as well as the 2D drawing ctx
          function download() {
+		 	downloadLnk.download = 'myFilename.jpg';
 			var dt = canvas.toDataURL('Pictures/jpeg');
 			this.href = dt;
 		};
