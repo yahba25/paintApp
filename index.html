@@ -224,18 +224,6 @@ img {
             <canvas id="canvasSignature" height="100%" ></canvas>
         </div>
 		
-		<!--<div>
-            <input type="button" onclick="uploadEx()" value="Upload" />
-        </div>
- 
-        <form method="post" accept-charset="utf-8" name="form1">
-            <input name="hidden_data" id='hidden_data' type="hidden"/>
-        </form>-->
-       <!-- <div class="copy"><label>abhay maurya &copy;2018</label></div> -->
-    </div>
-	
-    
-
 </body>
    <script type="text/javascript">
 	   var undoPoints=[];
@@ -386,32 +374,6 @@ img {
  
          }
 
-		//undo redo
-		 
-		 // hold down the undo button to erase the last line segment
-			/*var interval;
-			$(".b1").mousedown(function() {
-			  interval = setInterval(undo, 50);
-			}).mouseup(function() {
-			  clearInterval(interval);
-			});
-			
-			$(".b2").mousedown(function() {
-			  interval = setInterval(redo, 50);
-			}).mouseup(function() {
-			  clearInterval(interval);
-			});
-			
-			
-		
-			$(".b1").on('click touch', function () {
-			 console.log(undoPoints);
-             undo();
-			})
-			$(".b1").on('click touch', function () {
-             redo();
-			})
-			*/
 		
 		
          //control button 
@@ -485,66 +447,7 @@ img {
          $(".b14").on('click touch', function () { preColor = color; color = "#40E0D0"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//tuwquoise
          $(".b15").on('click touch', function () { preColor = color; color = " #808000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//olive
 		
-		
-		
-		
-		function redrawAll(){
-
-        if(undoPoints.length==0){return;}
-
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        for(var i=0;i<undoPoints.length;i++){
-
-          var pt=undoPoints[i];
-
-          var begin=false;
-
-          if(ctx.lineWidth!=pt.size){
-              ctx.lineWidth=pt.size;
-              begin=true;
-          }
-          if(ctx.strokeStyle!=pt.color){
-              ctx.strokeStyle=pt.color;
-              begin=true;
-          }
-          if(pt.mode=="begin" || begin){
-              ctx.beginPath();
-              ctx.moveTo(pt.x,pt.y);
-          }
-          ctx.lineTo(pt.x,pt.y);
-          if(pt.mode=="end" || (i==undoPoints.length-1)){
-              ctx.stroke();
-          }
-        }
-        ctx.stroke();
-		console.log("redraw..");
-    }
-
-    function undo(){
-		if(undoPoints.length>0){
-			redoPoints.push(undoPoints[(undoPoints.length)-1]);
-			console.log(undoPoints[(undoPoints.length)-1]);
-			console.log(redoPoints[(undoPoints.length)-1]);
-			undoPoints.pop();
-			redrawAll();
-			console.log("undo completed");
-		}
-		
-    }
-	function redo(){
-		if(redoPoints.length>0){
-			console.log(redoPoints[(redoPoints.length)-1]);
-			undoPoints.push(redoPoints[(redoPoints.length)-1]);
-			redoPoints.pop();
-			redrawAll();
-		}
-		
-	}
-		
-		
-		
-		
+	
       });
 	  
  
@@ -611,29 +514,5 @@ img {
 				  "background :"+ color +";}"
 			}
 	  
-	  /*
-	  function uploadEx() {
-                var canvas = document.getElementById("canvasSignature");
-                var dataURL = canvas.toDataURL("image/png");
-                document.getElementById('hidden_data').value = dataURL;
-                var fd = new FormData(document.forms["form1"]);
- 
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'upload_data.php', true);
- 
-                xhr.upload.onprogress = function(e) {
-                    if (e.lengthComputable) {
-                        var percentComplete = (e.loaded / e.total) * 100;
-                        console.log(percentComplete + '% uploaded');
-                        alert('Succesfully uploaded');
-                    }
-                };
- 
-                xhr.onload = function() {
- 
-                };
-                xhr.send(fd);
-            };     
-		*/
-   </script>
+	   </script>
 </html> 
