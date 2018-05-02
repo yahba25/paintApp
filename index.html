@@ -338,7 +338,7 @@ img {
                      this.isDrawing = false;
 					 
                   }
-				  console.log("touch end");
+				 // console.log("touch end");
 					 undoPoints.push({x:position.x,y:position.y,size:brushSize,color:brushColor,mode:"end"});
       
                }
@@ -348,10 +348,10 @@ img {
 			function tend(draw){
 				
                   drawer.isDrawing = false;
-				  console.log("touch end");
+				  //console.log("touch end");
 				  undoPoints.push({x:lastVal.x,y:lastVal.y,size:brushSize,brushColor:color,mode:"end"});
-				  console.log(undoPoints[(undoPoints.length)-2]);
-				  console.log(undoPoints[(undoPoints.length)-1]);
+				 // console.log(undoPoints[(undoPoints.length)-2]);
+				  //console.log(undoPoints[(undoPoints.length)-1]);
 				}
            
             // attach the touchstart, touchmove, touchend event listeners.
@@ -445,7 +445,7 @@ img {
              color = $(this).val();
              ctx.strokeStyle = color;
              isPen = true;
-			 console.log("color changed");
+			// console.log("color changed");
              $('.eImg').attr('src', 'eraser.png'); 
 			 updateBar();
          });
@@ -453,9 +453,6 @@ img {
          
 		 downloadLnk.addEventListener('click', download, false);
 		 
-		 $(".b3").on('click touch', function () {
-             console.log(undoPoints);
-         });
 		 
          $(".paint-all").on('click touch', function () {
              $("canvas").css("background-color", color);
@@ -484,14 +481,14 @@ img {
                 color = bgColor;
                 ctx.strokeStyle = color;
                 $('.eImg').attr('src', 'brush.png');
-                console.log("eraser");
+                //console.log("eraser");
             }
             else if(!isPen)  {
                 isPen = true;
                 color = preColor;
                 ctx.strokeStyle = color;
                 $('.eImg').attr('src', 'eraser.png');
-                console.log("pen");
+                //console.log("pen");
             }
 
          });
@@ -499,7 +496,7 @@ img {
          
         // $(".b1").on('click touch', function () { preColor = color; color = "#ff0000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//red
          //$(".b2").on('click touch', function () { preColor = color; color = "#008000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//green
-        // $(".b3").on('click touch', function () { preColor = color; color = "#ffff00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//yellow
+         $(".b3").on('click touch', function () { preColor = color; color = "#ffff00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//yellow
          $(".b4").on('click touch', function () { preColor = color; color = "#0000ff"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//blue
          $(".b5").on('click touch', function () { preColor = color; color = "#a52a2a"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//brown
          $(".b6").on('click touch', function () { preColor = color; color = "#ffffff"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//white
@@ -566,7 +563,7 @@ img {
 				var newStyles = document.createElement('style')
 				document.head.append(newStyles)
 				if ((preColor=='#FFFFFF') && (color=='#FFFFFF')){ 
-						console.log("equal");
+						//console.log("equal");
 						newStyles.innerHTML =".slider::-webkit-slider-thumb {" +
 							" border: black ;} " ;	}
 				else{ newStyles.innerHTML =".slider::-webkit-slider-thumb {" +
@@ -586,13 +583,13 @@ img {
 			var name="myPaint"+count;
 			var fileName=prompt("Save as : ",name);
 			if(fileName != null){
-				console.log("Name : "+fileName);
+				//console.log("Name : "+fileName);
 				downloadLnk.download=fileName+".jpg";
 				var dt = canvas.toDataURL('Pictures/jpeg');
 				this.href = dt;
 			}
 			else {
-				console.log("null : "+fileName);
+				//console.log("null : "+fileName);
 				
 			}
 			
