@@ -47,11 +47,8 @@
            align-items: center;
        }
        @media only screen and (max-width: 400px) {
-           .slidecontainer,
-           .tools
-           {
-               width: 50%;
-           }
+           .slidecontainer{width: 35%; }
+           .tools {  width: 65%; }
            .button-tool{
                width:100%;
            }
@@ -62,10 +59,8 @@
            }
        }
        @media screen and (orientation:landscape) and (max-width: 400px) {
-           .slidecontainer,
-           .tools {
-               width: 50%;
-           }
+           .slidecontainer{width: 40%; }
+           .tools {  width: 60%; }
 
            .button-tool {
                width: 100%;
@@ -79,11 +74,8 @@
        }
        /* Tablet Styles */
        @media only screen and (min-width: 401px) and (max-width: 960px) {
-           .slidecontainer,
-           .tools
-            {
-               width: 50%;
-           }
+           .slidecontainer{width: 40%; }
+           .tools {  width: 60%; }
            .button-tool{
                width:100%;
            }
@@ -123,7 +115,7 @@ background:black;
 }
 button {
     height: 100%;
-    width: 25%;
+    width: 100%;
     background:none;
 }
 
@@ -195,6 +187,8 @@ img {
 
             <button class="pickColor"><input id="colorPicker" type="color" value="#0000ff"></button>
             <button class="reset"><img src="reset.png" /></button>
+			<button class="Undo" ><img src="left.png" /></a></button>
+            <button class="Redo" ><img src="right.png" /></a></button>
             <button class="eraser"><img class="eImg" src="eraser.png" /></button>
             <button class="paint-all"><img src="fillColor.png" /></button>
 			<button><a id="downloadLnk"><img src="file.png" /></a></button>
@@ -394,7 +388,7 @@ img {
 		 
 		 // hold down the undo button to erase the last line segment
 			var interval;
-			$(".b1").mousedown(function() {
+			$(".Undo").mousedown(function() {
 			  interval = setInterval(undo, 30);
 			}).mouseup(function() {
 			  clearInterval(interval);
@@ -402,7 +396,7 @@ img {
 			  ctx.strokeStyle = color;
 			});
 			
-			$(".b2").mousedown(function() {
+			$(".Redo").mousedown(function() {
 			  interval = setInterval(redo, 30);
 			}).mouseup(function() {
 			  clearInterval(interval);
@@ -412,7 +406,7 @@ img {
 			
 			
 			
-			$( ".b1" ).bind({
+			$( ".Undo" ).bind({
 			  touchstart: function() {
 				//console.log("b1>")
 				interval = setInterval(undo, 30);
@@ -424,7 +418,7 @@ img {
 				ctx.strokeStyle = color;
 			  }
 			});
-			$( ".b2" ).bind({
+			$( ".Redo" ).bind({
 			  touchstart: function() {
 				//console.log("b2>")
 				interval = setInterval(redo, 30);
@@ -494,8 +488,8 @@ img {
          });
 
          
-        // $(".b1").on('click touch', function () { preColor = color; color = "#ff0000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//red
-         //$(".b2").on('click touch', function () { preColor = color; color = "#008000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//green
+         $(".b1").on('click touch', function () { preColor = color; color = "#ff0000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//red
+         $(".b2").on('click touch', function () { preColor = color; color = "#008000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//green
          $(".b3").on('click touch', function () { preColor = color; color = "#ffff00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//yellow
          $(".b4").on('click touch', function () { preColor = color; color = "#0000ff"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//blue
          $(".b5").on('click touch', function () { preColor = color; color = "#a52a2a"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//brown
