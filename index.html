@@ -131,13 +131,19 @@ img {
     height: 100%;
     width: 80%;
 }
-
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+}
 .slider {
     -webkit-appearance: none;
     width: 100%;
-    height: 10px;
+    
     border-radius: 5px;
-    background: #d3d3d3;
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
@@ -155,16 +161,18 @@ img {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background: #4CAF50;
+    background:red;
     cursor: pointer;
+	border:2px solid white;
 }
 
 .slider::-moz-range-thumb {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background: #4CAF50;
+    background:red;
     cursor: pointer;
+	border:2px solid white;
 }
 .copy {
     position: fixed;
@@ -189,8 +197,7 @@ img {
             <button class="reset"><img src="reset.png" /></button>
             <button class="eraser"><img class="eImg" src="eraser.png" /></button>
             <button class="paint-all"><img src="fillColor.png" /></button>
-	    <button><a id="downloadLnk" download="YourFileName.jpg"><img src="file.png" style="height:100%; width:80%" /></a></button>
-
+			<button><a id="downloadLnk" download="YourFileName.jpg"><img src="file.png" /></a></button>
         </div>
 
         <div class="button-tool section">
@@ -209,21 +216,32 @@ img {
             <button class="b13" style="background-color:aqua; width:6.66%"></button>
             <button class="b14" style="background-color:turquoise; width:6.66%"></button>
             <button class="b15" style="background-color:olive; width:6.66%"></button>
+			
 
         </div>
         <div id="canvasDiv section">
             <!-- It's bad practice (to me) to put your CSS here.  I'd recommend the use of a CSS file! -->
-            <canvas id="canvasSignature" height="100%"></canvas>
+            <canvas id="canvasSignature" height="100%" ></canvas>
         </div>
-	
-       <div class="copy"><label>abhay maurya &copy;2018</label></div>
+		
+		<!--<div>
+            <input type="button" onclick="uploadEx()" value="Upload" />
+        </div>
+ 
+        <form method="post" accept-charset="utf-8" name="form1">
+            <input name="hidden_data" id='hidden_data' type="hidden"/>
+        </form>-->
+       <!-- <div class="copy"><label>abhay maurya &copy;2018</label></div> -->
     </div>
 	
     
 
 </body>
    <script type="text/javascript">
-       var count=0;
+	   var undoPoints=[];
+	   var redoPoints=[];
+	   var brushSize=10;
+	   var count=0;
        var color = '#ff0000';
        var bgColor = '#000000';
        var preColor = color;
@@ -247,16 +265,24 @@ img {
         var is_touch_device = 'ontouchstart' in document.documentElement;
 		 
 		//output.innerHTML = slider.value;
+		
 		slider.oninput = function() {
 		    //output.innerHTML = this.value;
-		    ctx.lineWidth = this.value; }
+			brushSize=this.value;
+		    ctx.lineWidth = this.value; 
+			updateBar();
+			
+				
+			
+			}
+	/*
 		
-		
+*/
      $(document).ready(function () {
         // get references to the canvas element as well as the 2D drawing ctx
-         function download() {
+		 function download() {
 			count++;
-			var fileName=prompt("Save as : ","myPaint"+count);
+			var fileName=prompt("<b>Save as : ","myPaint"+count);
 			console.log("name : "+fileName);
 			downloadLnk.download=fileName+".jpg";
 			var dt = canvas.toDataURL('Pictures/jpeg');
@@ -266,37 +292,33 @@ img {
  
          if (is_touch_device) {
             // create a drawer which tracks touch movements
-			var isDragging=false;
             var drawer = {
                isDrawing: false,
                touchstart: function (position) {
-			      isDragging = false;
                   ctx.beginPath();
                   ctx.moveTo(position.x, position.y);
                   this.isDrawing = true;
+				  undoPoints.push({x:position.x,y:position.y,size:brushSize,color:color,mode:"begin"});
+      
                },
                touchmove: function (position) {
-				  isDragging=true;
                   if (this.isDrawing) {
                      ctx.lineTo(position.x, position.y);
                      ctx.stroke();
-				
+					undoPoints.push({x:position.x,y:position.y,size:brushSize,color:color,mode:"draw"});
+      
+					 
                   }
                },
                touchend: function (position) {
-			      console.log("?");
-			      if(isDragging){
-				    console.log("drag");
-					if (this.isDrawing) {
+                  if (this.isDrawing) {
                      this.touchmove(position);
                      this.isDrawing = false;
-					}
-				  }
-				  else{
-					console.log("tap");
-				  }
-                  
-				  
+					 
+                  }
+				  console.log("touch end");
+					 undoPoints.push({x:position.x,y:position.y,size:brushSize,color:color,mode:"end"});
+      
                }
 			   
             };
@@ -308,6 +330,9 @@ img {
                var position = {
                   x: event.targetTouches[0].pageX,
                   y: event.targetTouches[0].pageY
+				  
+				  //x: event.changedTouches[0].pageX
+				  //y: event.changedTouches[0].pageY
                };
  
                // Now we need to get the offset of the canvas location
@@ -332,7 +357,6 @@ img {
             canvas.addEventListener('touchstart', draw, false);
             canvas.addEventListener('touchmove', draw, false);
             canvas.addEventListener('touchend', draw, false);
-	    //canvas.addEventListener('tap', draw, false);
  
             // prevent elastic scrolling
             canvas.addEventListener('touchmove', function (event) {
@@ -348,7 +372,8 @@ img {
  
                ctx.moveTo(position.X, position.Y);
                ctx.beginPath();
-			
+			   undoPoints.push({x:position.X,y:position.Y,size:brushSize,color:color,mode:"begin"});
+      
                // attach event handlers
                $(this).mousemove(function (mouseEvent) {
                   drawLine(mouseEvent, canvas, ctx);
@@ -361,22 +386,48 @@ img {
  
          }
 
-
+		//undo redo
+		 
+		 // hold down the undo button to erase the last line segment
+			/*var interval;
+			$(".b1").mousedown(function() {
+			  interval = setInterval(undo, 50);
+			}).mouseup(function() {
+			  clearInterval(interval);
+			});
+			
+			$(".b2").mousedown(function() {
+			  interval = setInterval(redo, 50);
+			}).mouseup(function() {
+			  clearInterval(interval);
+			});
+			
+			
+		
+			$(".b1").on('click touch', function () {
+			 console.log(undoPoints);
+             undo();
+			})
+			$(".b1").on('click touch', function () {
+             redo();
+			})
+			*/
+		
+		
          //control button 
          $('#colorPicker').on('change', function () {
+			preColor=color;
              color = $(this).val();
              ctx.strokeStyle = color;
              isPen = true;
+			 console.log("color changed");
              $('.eImg').attr('src', 'eraser.png'); 
+			 updateBar();
          });
-         /*
-         $("#colorPicker").on('click touch', function () {
-             console.log("clicked");
-             
-             color = document.getElementById("colorPicker").value;
-             ctx.strokeStyle = color;
-             console.log("color: "+color);
-         });*/
+         
+         
+		 
+		 
          $(".paint-all").on('click touch', function () {
              $("canvas").css("background-color", color);
              bgColor = color;
@@ -391,6 +442,9 @@ img {
              $('.eImg').attr('src', 'eraser.png');
              ctx.clearRect(0, 0, canvas.width, canvas.height);
              ctx.strokeStyle = '#ff0000';
+			 undoPoints=[];
+			 redoPoints=[];
+			 updateBar();
          });
 
          $(".eraser").on('click touch', function () {
@@ -414,24 +468,85 @@ img {
          });
 
          
-         $(".b1").on('click touch', function () { preColor = color; color = "#ff0000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//red
-         $(".b2").on('click touch', function () { preColor = color; color = "#008000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//green
-         $(".b3").on('click touch', function () { preColor = color; color = "#FFFF00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//yellow
-         $(".b3").on('click touch', function () { preColor = color; color = "#FFFF00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//yellow
-         $(".b4").on('click touch', function () { preColor = color; color = "#0000FF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//blue
-         $(".b5").on('click touch', function () { preColor = color; color = "#A52A2A"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//brown
-         $(".b6").on('click touch', function () { preColor = color; color = "#FFFFFF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//white
-         $(".b7").on('click touch', function () { preColor = color; color = "#000000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//black
-         $(".b8").on('click touch', function () { preColor = color; color = "#FFA500"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//orange
-         $(".b9").on('click touch', function () { preColor = color; color = "#808080"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//gray
-         $(".b10").on('click touch', function () { preColor = color; color = "#00FF00"; ctx.strokeStyle = color;isPen = true; $('.eImg').attr('src', 'eraser.png'); });//lime
-         $(".b11").on('click touch', function () { preColor = color; color = "#FFD700"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//gold
-         $(".b12").on('click touch', function () { preColor = color; color = "#FFC0CB"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//pink
-         $(".b13").on('click touch', function () { preColor = color; color = "#00FFFF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//aqva
-         $(".b14").on('click touch', function () { preColor = color; color = "#40E0D0"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//tuwquoise
-         $(".b15").on('click touch', function () { preColor = color; color = " #808000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//olive
+         $(".b1").on('click touch', function () { preColor = color; color = "#ff0000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//red
+         $(".b2").on('click touch', function () { preColor = color; color = "#008000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//green
+         $(".b3").on('click touch', function () { preColor = color; color = "#FFFF00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar(); });//yellow
+         $(".b3").on('click touch', function () { preColor = color; color = "#FFFF00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//yellow
+         $(".b4").on('click touch', function () { preColor = color; color = "#0000FF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//blue
+         $(".b5").on('click touch', function () { preColor = color; color = "#A52A2A"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//brown
+         $(".b6").on('click touch', function () { preColor = color; color = "#FFFFFF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//white
+         $(".b7").on('click touch', function () { preColor = color; color = "#000000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//black
+         $(".b8").on('click touch', function () { preColor = color; color = "#FFA500"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//orange
+         $(".b9").on('click touch', function () { preColor = color; color = "#808080"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//gray
+         $(".b10").on('click touch', function () { preColor = color; color = "#00FF00"; ctx.strokeStyle = color;isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//lime
+         $(".b11").on('click touch', function () { preColor = color; color = "#FFD700"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//gold
+         $(".b12").on('click touch', function () { preColor = color; color = "#FFC0CB"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//pink
+         $(".b13").on('click touch', function () { preColor = color; color = "#00FFFF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//aqva
+         $(".b14").on('click touch', function () { preColor = color; color = "#40E0D0"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//tuwquoise
+         $(".b15").on('click touch', function () { preColor = color; color = " #808000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//olive
+		
+		
+		
+		
+		function redrawAll(){
 
+        if(undoPoints.length==0){return;}
+
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        for(var i=0;i<undoPoints.length;i++){
+
+          var pt=undoPoints[i];
+
+          var begin=false;
+
+          if(ctx.lineWidth!=pt.size){
+              ctx.lineWidth=pt.size;
+              begin=true;
+          }
+          if(ctx.strokeStyle!=pt.color){
+              ctx.strokeStyle=pt.color;
+              begin=true;
+          }
+          if(pt.mode=="begin" || begin){
+              ctx.beginPath();
+              ctx.moveTo(pt.x,pt.y);
+          }
+          ctx.lineTo(pt.x,pt.y);
+          if(pt.mode=="end" || (i==undoPoints.length-1)){
+              ctx.stroke();
+          }
+        }
+        ctx.stroke();
+		console.log("redraw..");
+    }
+
+    function undo(){
+		if(undoPoints.length>0){
+			redoPoints.push(undoPoints[(undoPoints.length)-1]);
+			console.log(undoPoints[(undoPoints.length)-1]);
+			console.log(redoPoints[(undoPoints.length)-1]);
+			undoPoints.pop();
+			redrawAll();
+			console.log("undo completed");
+		}
+		
+    }
+	function redo(){
+		if(redoPoints.length>0){
+			console.log(redoPoints[(redoPoints.length)-1]);
+			undoPoints.push(redoPoints[(redoPoints.length)-1]);
+			redoPoints.pop();
+			redrawAll();
+		}
+		
+	}
+		
+		
+		
+		
       });
+	  
  
       // works out the X, Y position of the click inside the canvas from the X, Y position on the page
       function getPosition(mouseEvent, canvas) {
@@ -455,6 +570,8 @@ img {
          var position = getPosition(mouseEvent, canvas);
  
          ctx.lineTo(position.X, position.Y);
+		 undoPoints.push({x:position.X,y:position.Y,size:brushSize,color:color,mode:"draw"});
+      
          ctx.stroke();
       }
  
@@ -464,7 +581,9 @@ img {
       function finishDrawing(mouseEvent, canvas, ctx) {
          // draw the line to the finishing coordinates
          drawLine(mouseEvent, canvas, ctx);
- 
+		 var position = getPosition(mouseEvent, canvas);
+		undoPoints.push({x:position.X,y:position.Y,size:brushSize,color:color,mode:"end"});
+      
          ctx.closePath();
  
          // unbind any events which could draw
@@ -473,6 +592,40 @@ img {
                      .unbind("mouseout");
       }
 	  
+	  function updateBar(){
+				var newStyles = document.createElement('style')
+				document.head.append(newStyles)
+				newStyles.innerHTML = ".slider::-webkit-slider-thumb {" +
+				  " background:"+preColor +";"+
+				"}" +".slider{" +
+				  "height:" +slider.value+";}"+
+				  ".slider {" +
+				  "background :"+ color +";}"
+			}
 	  
+	  /*
+	  function uploadEx() {
+                var canvas = document.getElementById("canvasSignature");
+                var dataURL = canvas.toDataURL("image/png");
+                document.getElementById('hidden_data').value = dataURL;
+                var fd = new FormData(document.forms["form1"]);
+ 
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'upload_data.php', true);
+ 
+                xhr.upload.onprogress = function(e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = (e.loaded / e.total) * 100;
+                        console.log(percentComplete + '% uploaded');
+                        alert('Succesfully uploaded');
+                    }
+                };
+ 
+                xhr.onload = function() {
+ 
+                };
+                xhr.send(fd);
+            };     
+		*/
    </script>
 </html> 
