@@ -187,11 +187,11 @@ img {
 
             <button class="pickColor"><input id="colorPicker" type="color" value="#0000ff"></button>
             <button class="reset"><img src="reset.png" /></button>
-		<button class="Undo" ><b>U</b></a></button>
-            <button class="Redo" ><b>R</b></button>
+			<button class="Undo" ><img src="left.png" /></a></button>
+            <button class="Redo" ><img src="right.png" /></a></button>
             <button class="eraser"><img class="eImg" src="eraser.png" /></button>
             <button class="paint-all"><img src="fillColor.png" /></button>
-	    
+			
         </div>
 
         <div class="button-tool section">
@@ -208,17 +208,17 @@ img {
             <button class="b11" style="background-color:gold; width:6.66%"></button>
             <button class="b12" style="background-color:pink; width:6.66%"></button>
             <button class="b13" style="background-color:aqua; width:6.66%"></button>
-	    <button><a id="downloadLnk"><img src="file.png" /></a></button>
-         <!--   <button class="b14" style="background-color:turquoise; width:6.66%"></button>-->
-        <!--<button class="b15" style="background-color:olive; width:6.66%"></button>-->
-			
+			<button><a id="downloadLnk"><img src="file.png"style="width:6.66%" /></a></button>
+           <!-- <button class="b14" style="background-color:turquoise; width:6.66%"></button>
+            <button class="b15" style="background-color:olive; width:6.66%"></button>
+			-->
 
         </div>
         <div id="canvasDiv section">
             <!-- It's bad practice (to me) to put your CSS here.  I'd recommend the use of a CSS file! -->
             <canvas id="canvasSignature" height="100%" ></canvas>
         </div>
-	
+		
         <div class="copy"><label>abhay maurya &copy;2018</label></div> 
     </div>
 	
@@ -351,7 +351,12 @@ img {
             canvas.addEventListener('touchmove', function (event) {
                event.preventDefault();
             }, false); 
-		 
+			div.addEventListener('prompt', function (event) {
+               event.preventDefault();
+            }, false); 
+			div.addEventListener('alert', function (event) {
+               event.preventDefault();
+            }, false); 
          }
          else {
  
@@ -496,8 +501,8 @@ img {
          $(".b11").on('click touch', function () { preColor = color; color = "#ffd700"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//gold
          $(".b12").on('click touch', function () { preColor = color; color = "#ffc0cb"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//pink
          $(".b13").on('click touch', function () { preColor = color; color = "#00ffff"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//aqva
-         $(".b14").on('click touch', function () { preColor = color; color = "#40e0d0"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//tuwquoise
-       //  $(".b15").on('click touch', function () { preColor = color; color = " #808000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//olive
+         //$(".b14").on('click touch', function () { preColor = color; color = "#40e0d0"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//tuwquoise
+        // $(".b15").on('click touch', function () { preColor = color; color = "#808000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); updateBar();});//olive
 		
 		
       });
