@@ -161,16 +161,16 @@ img {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background:red;
+    background:green;
     cursor: pointer;
-	border:2px solid white;
+	border:2px solid;
 }
 
 .slider::-moz-range-thumb {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background:red;
+    background:green;
     cursor: pointer;
 	border:2px solid white;
 }
@@ -244,7 +244,7 @@ img {
 	   var count=0;
        var color = '#ff0000';
        var bgColor = '#000000';
-       var preColor = color;
+       var preColor = '#ffffff';
        var isPen = true;
 		var slider = document.getElementById("myRange");
 		var output = document.getElementById("demo");
@@ -260,7 +260,7 @@ img {
 		ctx.lineJoin = 'round';
 		ctx.lineCap = 'round';
 		ctx.lineWidth = 10;
-        
+        updateBar();
          // This will be defined on a TOUCH device such as iPad or Android, etc.
         var is_touch_device = 'ontouchstart' in document.documentElement;
 		 
@@ -437,7 +437,7 @@ img {
              $("canvas").css("background-color", 'black');
              color = '#ff0000';
              bgColor = '#000000';
-             preColor = color;
+             preColor = 'green';
              isPen = true;
              $('.eImg').attr('src', 'eraser.png');
              ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -593,8 +593,16 @@ img {
       }
 	  
 	  function updateBar(){
+				
 				var newStyles = document.createElement('style')
 				document.head.append(newStyles)
+				if ((preColor=='#FFFFFF') && (color=='#FFFFFF')){ 
+						console.log("equal");
+						newStyles.innerHTML =".slider::-webkit-slider-thumb {" +
+							" border: black ;} " ;	}
+				else{ newStyles.innerHTML =".slider::-webkit-slider-thumb {" +
+							" border: white ;} " ;
+				}
 				newStyles.innerHTML = ".slider::-webkit-slider-thumb {" +
 				  " background:"+preColor +";"+
 				"}" +".slider{" +
