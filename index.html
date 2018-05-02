@@ -187,11 +187,11 @@ img {
 
             <button class="pickColor"><input id="colorPicker" type="color" value="#0000ff"></button>
             <button class="reset"><img src="reset.png" /></button>
-			<button class="Undo" ><img src="left.png" /></a></button>
-            <button class="Redo" ><img src="right.png" /></a></button>
+	    <button class="Undo" >U</a></button>
+            <button class="Redo" >R</button>
             <button class="eraser"><img class="eImg" src="eraser.png" /></button>
             <button class="paint-all"><img src="fillColor.png" /></button>
-			<button><a id="downloadLnk"><img src="file.png" /></a></button>
+	    <button><a id="downloadLnk"><img src="file.png" /></a></button>
         </div>
 
         <div class="button-tool section">
@@ -217,14 +217,7 @@ img {
             <!-- It's bad practice (to me) to put your CSS here.  I'd recommend the use of a CSS file! -->
             <canvas id="canvasSignature" height="100%" ></canvas>
         </div>
-		
-		<!--<div>
-            <input type="button" onclick="uploadEx()" value="Upload" />
-        </div>
- 
-        <form method="post" accept-charset="utf-8" name="form1">
-            <input name="hidden_data" id='hidden_data' type="hidden"/>
-        </form>-->
+	
         <div class="copy"><label>abhay maurya &copy;2018</label></div> 
     </div>
 	
@@ -357,12 +350,7 @@ img {
             canvas.addEventListener('touchmove', function (event) {
                event.preventDefault();
             }, false); 
-		 div.addEventListener('prompt', function (event) {
-               event.preventDefault();
-            }, false); 
-			div.addEventListener('alert', function (event) {
-               event.preventDefault();
-            }, false); 
+		 
          }
          else {
  
