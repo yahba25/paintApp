@@ -398,12 +398,16 @@ img {
 			  interval = setInterval(undo, 30);
 			}).mouseup(function() {
 			  clearInterval(interval);
+			  ctx.lineWidth = slider.value;
+			  ctx.strokeStyle = color;
 			});
 			
 			$(".b2").mousedown(function() {
 			  interval = setInterval(redo, 30);
 			}).mouseup(function() {
 			  clearInterval(interval);
+			  ctx.lineWidth = slider.value;
+			  ctx.strokeStyle = color;
 			});
 			
 			
@@ -416,6 +420,8 @@ img {
 			  touchend: function() {
 				//console.log("b1<")
 				clearInterval(interval);
+				ctx.lineWidth = slider.value;
+				ctx.strokeStyle = color;
 			  }
 			});
 			$( ".b2" ).bind({
@@ -426,6 +432,8 @@ img {
 			  touchend: function() {
 				//console.log("b2<")
 				clearInterval(interval);
+				ctx.lineWidth = slider.value;
+				ctx.strokeStyle = color;
 			  }
 			});
 			
