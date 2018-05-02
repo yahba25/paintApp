@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>Upload Canvas</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+   <style>
+       * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+       }
+       div{
+           border:0px solid red;
+       }
+       /* Mobile Styles */
+       @media only screen and (max-width: 400px) {
+           body {
+               background-color: #F09A9D; /* Red */
+           }
+       }
+
+       /* Tablet Styles */
+       @media only screen and (min-width: 401px) and (max-width: 960px) {
+           body {
+               background-color: #F5CF8E; /* Yellow */
+           }
+       }
+       /* Desktop Styles */
+       @media only screen and (min-width: 961px) {
+           body {
+               background-color: #B2D6FF; /* Blue */
+           }
+       }
+
+       .page {
+           display: flex;
+           flex-wrap: wrap;
+       }
+
+       .section {
+           width: 100%;
+           height: auto;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+       }
+       @media only screen and (max-width: 400px) {
+           .slidecontainer,
+           .tools
+           {
+               width: 50%;
+           }
+           .button-tool{
+               width:100%;
+           }
+           .slidecontainer,
+           .button-tool,
+           .tools {
+               height: 25px;
+           }
+       }
+       @media screen and (orientation:landscape) and (max-width: 400px) {
+           .slidecontainer,
+           .tools {
+               width: 50%;
+           }
+
+           .button-tool {
+               width: 100%;
+           }
+
+           .slidecontainer,
+           .button-tool,
+           .tools {
+               height: 25px;
+           }
+       }
+       /* Tablet Styles */
+       @media only screen and (min-width: 401px) and (max-width: 960px) {
+           .slidecontainer,
+           .tools
+            {
+               width: 50%;
+           }
+           .button-tool{
+               width:100%;
+           }
+           .slidecontainer,
+           .button-tool,
+           .tools {
+               height: 30px;
+           }
+       }
+       /* Desktop Styles */
+       @media only screen and (min-width: 961px) {
+
+           .slidecontainer{
+               width:45%;
+           }
+           .tools{
+               width:20%;
+           }
+           .button-tool {
+               width: 35%;
+           }
+           .slidecontainer,
+           .button-tool,
+           .tools {
+               height: 35px;
+           }
+       }
+
+#colorPicker{ padding:0px;
+              height:100%;
+              width:100%;
+              
+
+}
+canvas {
+background:black;
+}
+button {
+    height: 100%;
+    width: 25%;
+    background:none;
+}
+
+img {
+    height: 100%;
+    width: 80%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+.copy {
+    position: fixed;
+    bottom: 2px;
+    width: 240px;
+    color:darkgreen;
+    font-size:xx-small;
+}
+   
+   </style>
+   
+</head>
+ 
+<body>
+    <div class="page">
+        <div class="slidecontainer section">
+            <input type="range" min="1" max="30" value="10" class="slider" id="myRange">
+        </div>
+        <div class="tools section">
+
+            <button class="pickColor"><input id="colorPicker" type="color" value="#0000ff"></button>
+            <button class="reset"><img src="reset.png" /></button>
+            <button class="eraser"><img class="eImg" src="eraser.png" /></button>
+            <button class="paint-all"><img src="fillColor.png" /></button>
+	    <button><a id="downloadLnk" download="YourFileName.jpg"><img src="file.png" style="height:100%; width:80%" /></a></button>
+
+        </div>
+
+        <div class="button-tool section">
+            <button class="b1" style="background-color:red; width:6.66%"></button>
+            <button class="b2" style="background-color:green; width:6.66%"></button>
+            <button class="b3" style="background-color:yellow; width:6.66%"></button>
+            <button class="b4" style="background-color:blue; width:6.66%"></button>
+            <button class="b5" style="background-color:brown; width:6.66%"></button>
+            <button class="b6" style="background-color:white; width:6.66%"></button>
+            <button class="b7" style="background-color:black; width:6.66%"></button>
+            <button class="b8" style="background-color:orange; width:6.66%"></button>
+            <button class="b9" style="background-color:gray; width:6.66%"></button>
+            <button class="b10" style="background-color:lime; width:6.66%"></button>
+            <button class="b11" style="background-color:gold; width:6.66%"></button>
+            <button class="b12" style="background-color:pink; width:6.66%"></button>
+            <button class="b13" style="background-color:aqua; width:6.66%"></button>
+            <button class="b14" style="background-color:turquoise; width:6.66%"></button>
+            <button class="b15" style="background-color:olive; width:6.66%"></button>
+
+        </div>
+        <div id="canvasDiv section">
+            <!-- It's bad practice (to me) to put your CSS here.  I'd recommend the use of a CSS file! -->
+            <canvas id="canvasSignature" height="100%"></canvas>
+        </div>
+	
+       <div class="copy"><label>abhay maurya &copy;2018</label></div>
+    </div>
+	
+    
+
+</body>
+   <script type="text/javascript">
+       var count=0;
+       var color = '#ff0000';
+       var bgColor = '#000000';
+       var preColor = color;
+       var isPen = true;
+		var slider = document.getElementById("myRange");
+		var output = document.getElementById("demo");
+		var canvas = document.getElementById("canvasSignature");
+		canvas.width = window.innerWidth;
+       if ($(window).width() < 400) { canvas.height = window.innerHeight - 52;}
+       else if ($(window).width() > 400 && $(window).width() < 960  ) {canvas.height = window.innerHeight - 62;}
+       else {canvas.height = window.innerHeight -35; }
+		
+        var ctx = canvas.getContext("2d");
+       let hue = 0;
+       ctx.strokeStyle = color;
+		ctx.lineJoin = 'round';
+		ctx.lineCap = 'round';
+		ctx.lineWidth = 10;
+        
+         // This will be defined on a TOUCH device such as iPad or Android, etc.
+        var is_touch_device = 'ontouchstart' in document.documentElement;
+		 
+		//output.innerHTML = slider.value;
+		slider.oninput = function() {
+		    //output.innerHTML = this.value;
+		    ctx.lineWidth = this.value; }
+		
+		
+     $(document).ready(function () {
+        // get references to the canvas element as well as the 2D drawing ctx
+         function download() {
+			count++;
+			var fileName=prompt("Save as : ","myPaint"+count);
+			console.log("name : "+fileName);
+			downloadLnk.download=fileName+".jpg";
+			var dt = canvas.toDataURL('Pictures/jpeg');
+			this.href = dt;
+		};
+		downloadLnk.addEventListener('click', download, false);
+ 
+         if (is_touch_device) {
+            // create a drawer which tracks touch movements
+			var isDragging=false;
+            var drawer = {
+               isDrawing: false,
+               touchstart: function (position) {
+			      isDragging = false;
+                  ctx.beginPath();
+                  ctx.moveTo(position.x, position.y);
+                  this.isDrawing = true;
+               },
+               touchmove: function (position) {
+				  isDragging=true;
+                  if (this.isDrawing) {
+                     ctx.lineTo(position.x, position.y);
+                     ctx.stroke();
+				
+                  }
+               },
+               touchend: function (position) {
+			      console.log("?");
+			      if(isDragging){
+				    console.log("drag");
+					if (this.isDrawing) {
+                     this.touchmove(position);
+                     this.isDrawing = false;
+					}
+				  }
+				  else{
+					console.log("tap");
+				  }
+                  
+				  
+               }
+			   
+            };
+ 
+            // create a function to pass touch events and coordinates to drawer
+            function draw(event) {
+ 
+               // get the touch coordinates.  Using the first touch in case of multi-touch
+               var position = {
+                  x: event.targetTouches[0].pageX,
+                  y: event.targetTouches[0].pageY
+               };
+ 
+               // Now we need to get the offset of the canvas location
+               var obj = canvas;
+ 
+               if (obj.offsetParent) {
+                  // Every time we find a new object, we add its offsetLeft and offsetTop to curleft and curtop.
+                  do {
+                     position.x -= obj.offsetLeft;
+                     position.y -= obj.offsetTop;
+                  }
+				  // The while loop can be "while (obj = obj.offsetParent)" only, which does return null
+				  // when null is passed back, but that creates a warning in some editors (i.e. VS2010).
+                  while ((obj = obj.offsetParent) != null);
+               }
+ 
+               // pass the coordinates to the appropriate handler
+               drawer[event.type](position);
+            }
+ 
+            // attach the touchstart, touchmove, touchend event listeners.
+            canvas.addEventListener('touchstart', draw, false);
+            canvas.addEventListener('touchmove', draw, false);
+            canvas.addEventListener('touchend', draw, false);
+	    //canvas.addEventListener('tap', draw, false);
+ 
+            // prevent elastic scrolling
+            canvas.addEventListener('touchmove', function (event) {
+               event.preventDefault();
+            }, false); 
+         }
+         else {
+ 
+            // start drawing when the mousedown event fires, and attach handlers to
+            // draw a line to wherever the mouse moves to
+            $("#canvasSignature").mousedown(function (mouseEvent) {
+               var position = getPosition(mouseEvent, canvas);
+ 
+               ctx.moveTo(position.X, position.Y);
+               ctx.beginPath();
+			
+               // attach event handlers
+               $(this).mousemove(function (mouseEvent) {
+                  drawLine(mouseEvent, canvas, ctx);
+               }).mouseup(function (mouseEvent) {
+                  finishDrawing(mouseEvent, canvas, ctx);
+               }).mouseout(function (mouseEvent) {
+                  finishDrawing(mouseEvent, canvas, ctx);
+               });
+            });
+ 
+         }
+
+
+         //control button 
+         $('#colorPicker').on('change', function () {
+             color = $(this).val();
+             ctx.strokeStyle = color;
+             isPen = true;
+             $('.eImg').attr('src', 'eraser.png'); 
+         });
+         /*
+         $("#colorPicker").on('click touch', function () {
+             console.log("clicked");
+             
+             color = document.getElementById("colorPicker").value;
+             ctx.strokeStyle = color;
+             console.log("color: "+color);
+         });*/
+         $(".paint-all").on('click touch', function () {
+             $("canvas").css("background-color", color);
+             bgColor = color;
+         });
+         
+         $(".reset").on('click touch', function () {
+             $("canvas").css("background-color", 'black');
+             color = '#ff0000';
+             bgColor = '#000000';
+             preColor = color;
+             isPen = true;
+             $('.eImg').attr('src', 'eraser.png');
+             ctx.clearRect(0, 0, canvas.width, canvas.height);
+             ctx.strokeStyle = '#ff0000';
+         });
+
+         $(".eraser").on('click touch', function () {
+             
+            if (isPen) {
+                isPen = false;
+                preColor = color;
+                color = bgColor;
+                ctx.strokeStyle = color;
+                $('.eImg').attr('src', 'brush.png');
+                console.log("eraser");
+            }
+            else if(!isPen)  {
+                isPen = true;
+                color = preColor;
+                ctx.strokeStyle = color;
+                $('.eImg').attr('src', 'eraser.png');
+                console.log("pen");
+            }
+
+         });
+
+         
+         $(".b1").on('click touch', function () { preColor = color; color = "#ff0000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//red
+         $(".b2").on('click touch', function () { preColor = color; color = "#008000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//green
+         $(".b3").on('click touch', function () { preColor = color; color = "#FFFF00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//yellow
+         $(".b3").on('click touch', function () { preColor = color; color = "#FFFF00"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//yellow
+         $(".b4").on('click touch', function () { preColor = color; color = "#0000FF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//blue
+         $(".b5").on('click touch', function () { preColor = color; color = "#A52A2A"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//brown
+         $(".b6").on('click touch', function () { preColor = color; color = "#FFFFFF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//white
+         $(".b7").on('click touch', function () { preColor = color; color = "#000000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//black
+         $(".b8").on('click touch', function () { preColor = color; color = "#FFA500"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//orange
+         $(".b9").on('click touch', function () { preColor = color; color = "#808080"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//gray
+         $(".b10").on('click touch', function () { preColor = color; color = "#00FF00"; ctx.strokeStyle = color;isPen = true; $('.eImg').attr('src', 'eraser.png'); });//lime
+         $(".b11").on('click touch', function () { preColor = color; color = "#FFD700"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//gold
+         $(".b12").on('click touch', function () { preColor = color; color = "#FFC0CB"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//pink
+         $(".b13").on('click touch', function () { preColor = color; color = "#00FFFF"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//aqva
+         $(".b14").on('click touch', function () { preColor = color; color = "#40E0D0"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//tuwquoise
+         $(".b15").on('click touch', function () { preColor = color; color = " #808000"; ctx.strokeStyle = color; isPen = true; $('.eImg').attr('src', 'eraser.png'); });//olive
+
+      });
+ 
+      // works out the X, Y position of the click inside the canvas from the X, Y position on the page
+      function getPosition(mouseEvent, canvas) {
+         var x, y;
+         if (mouseEvent.pageX != undefined && mouseEvent.pageY != undefined) {
+            x = mouseEvent.pageX;
+            y = mouseEvent.pageY;
+         } else {
+            x = mouseEvent.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+            y = mouseEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+         }
+ 
+         return { X: x - canvas.offsetLeft, Y: y - canvas.offsetTop };
+      }
+ 
+      
+      // draws a line to the x and y coordinates of the mouse event inside
+      // the specified element using the specified ctx
+      function drawLine(mouseEvent, canvas, ctx) {
+ 
+         var position = getPosition(mouseEvent, canvas);
+ 
+         ctx.lineTo(position.X, position.Y);
+         ctx.stroke();
+      }
+ 
+      // draws a line from the last coordiantes in the path to the finishing
+      // coordinates and unbind any event handlers which need to be preceded
+      // by the mouse down event
+      function finishDrawing(mouseEvent, canvas, ctx) {
+         // draw the line to the finishing coordinates
+         drawLine(mouseEvent, canvas, ctx);
+ 
+         ctx.closePath();
+ 
+         // unbind any events which could draw
+         $(canvas).unbind("mousemove")
+                     .unbind("mouseup")
+                     .unbind("mouseout");
+      }
+	  
+	  
+   </script>
+</html> 
