@@ -206,10 +206,10 @@ img {
             <button class="b9" style="background-color:gray; width:6.66%"></button>
             <button class="b10" style="background-color:lime; width:6.66%"></button>
             <button class="b11" style="background-color:gold; width:6.66%"></button>
-            <button class="b12" style="background-color:pink; width:6.66%"></button>
+           <!-- <button class="b12" style="background-color:pink; width:6.66%"></button>-->
             <button class="b13" style="background-color:aqua; width:6.66%"></button>
-			<button class="pickColor" style="width:6.66%"><input id="colorPicker" type="color" value="#0000ff"></button>
-			<button style="width:13%" ><a id="downloadLnk" ><img src="file.png" /></a></button>
+			<button class="pickColor" style="width:9.66%"><input id="colorPicker" type="color" value="#0000ff"></button>
+			<button style="width:10.2%" ><a id="downloadLnk" ><img src="file.png" /></a></button>
            <!-- <button class="b14" style="background-color:turquoise; width:6.66%"></button>
             <button class="b15" style="background-color:olive; width:6.66%"></button>
 			-->
@@ -352,12 +352,7 @@ img {
             canvas.addEventListener('touchmove', function (event) {
                event.preventDefault();
             }, false); 
-			div.addEventListener('prompt', function (event) {
-               event.preventDefault();
-            }, false); 
-			div.addEventListener('alert', function (event) {
-               event.preventDefault();
-            }, false); 
+			
          }
          else {
  
@@ -450,8 +445,12 @@ img {
 		 
 		 
          $(".paint-all").on('click touch', function () {
+			
              $("canvas").css("background-color", color);
+			 //undoPoints.push({x:0,y:0,size:0, brushColor:color,mode:"paint-all"});
              bgColor = color;
+			 
+			 
          });
          
          $(".reset").on('click touch', function () {
@@ -605,6 +604,7 @@ img {
 			  //console.log("brushColor:"+pt.brushColor);
               begin=true;
           }
+		  //if( pt.mode=="paint-all" ){ $("canvas").css("background-color", pt.brushColor);  console.log("paint-all"); }
 		  
           if(pt.mode=="begin" || begin){
               ctx.beginPath();
@@ -621,17 +621,20 @@ img {
 
     function undo(){
 		if(undoPoints.length>0){
+			
 			redoPoints.push(undoPoints[(undoPoints.length)-1]);
 			//console.log(undoPoints[(undoPoints.length)-1]);
 			//console.log(redoPoints[(undoPoints.length)-1]);
 			undoPoints.pop();
 			redrawAll();
 			//console.log("undo completed");
+			
 		}
 		
     }
 	function redo(){
 		if(redoPoints.length>0){
+			
 			//console.log(redoPoints[(redoPoints.length)-1]);
 			undoPoints.push(redoPoints[(redoPoints.length)-1]);
 			redoPoints.pop();
