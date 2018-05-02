@@ -173,6 +173,7 @@ img {
     color:darkgreen;
     font-size:xx-small;
 }
+
    
    </style>
    
@@ -187,7 +188,7 @@ img {
 
             
             <button class="reset"><img src="reset.png" /></button>
-	    <button class="Undo" ><img src="left.png" /></button>
+			<button class="Undo" ><img src="left.png" /></button>
             <button class="Redo" ><img src="right.png" /></button>
             <button class="eraser"><img class="eImg" src="eraser.png" /></button>
             <button class="paint-all"><img src="fillColor.png" /></button>
@@ -261,7 +262,7 @@ img {
 */
      $(document).ready(function () {
         // get references to the canvas element as well as the 2D drawing ctx
-		 
+		 document.oncontextmenu = function () { return false; }
 		slider.oninput = function() {
 		    //output.innerHTML = this.value;
 			brushSize=this.value;
